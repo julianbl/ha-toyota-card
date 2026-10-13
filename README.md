@@ -38,7 +38,7 @@ It lays itself out for phones, tablets and full-page panel views.
 
 1. Download `toyota-card.js` from the [latest release](../../releases/latest).
 2. Copy it to `config/www/toyota-card.js`.
-3. Go to **Settings → Dashboards → ⋮ → Resources**, add `/local/toyota-card.js?v=1.0.0` as a **JavaScript module**, then reload your browser.
+3. Go to **Settings → Dashboards → ⋮ → Resources**, add `/local/toyota-card.js?v=1.0.1` as a **JavaScript module**, then reload your browser.
 
 ## Use
 
