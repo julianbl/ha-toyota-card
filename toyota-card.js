@@ -7,7 +7,7 @@
 // Usage:  type: custom:toyota-card
 //         prefix: <your car's entity prefix>   (optional - the first Toyota found is used)
 
-const VERSION = "1.0.0";
+const VERSION = "1.0.1";
 const KM_MI = 0.621371, L100_MPG = 282.481;
 const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
 const num = v => (v === undefined || v === null || v === "" || isNaN(+v)) ? null : +v;
@@ -157,10 +157,12 @@ class YarisCard extends HTMLElement {
     if (la) r.querySelector(".park").addEventListener("click", () => window.open(`https://www.google.com/maps/search/?api=1&query=${la},${lo}`, "_blank"));
   }
 }
-customElements.define("toyota-card", YarisCard);
+// each name is only registered if it's free, so this file can load next to the older blog
+// version (which also registers "yaris-card") without stopping with an error
+if (!customElements.get("toyota-card")) customElements.define("toyota-card", YarisCard);
 // older name from the blog version, so existing dashboards keep working
-customElements.define("yaris-card", class extends YarisCard {});
+if (!customElements.get("yaris-card")) customElements.define("yaris-card", class extends YarisCard {});
 
 window.customCards = window.customCards || [];
-window.customCards.push({ type: "toyota-card", name: "Toyota Card", description: "Fuel, doors, locks, trips and service for a Toyota (ha_toyota integration)", preview: false });
+if (!window.customCards.some(c => c.type === "toyota-card")) window.customCards.push({ type: "toyota-card", name: "Toyota Card", description: "Fuel, doors, locks, trips and service for a Toyota (ha_toyota integration)", preview: false });
 console.info(`%c TOYOTA-CARD %c v${VERSION} `, "background:#eb0a1e;color:#fff;font-weight:700", "background:#222;color:#fff");
