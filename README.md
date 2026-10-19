@@ -2,6 +2,8 @@
 
 A dashboard card for Toyotas in the **MyToyota** app, using the community [Toyota integration (pytoyoda/ha_toyota)](https://github.com/pytoyoda/ha_toyota). One card that answers "is the car locked, and how much fuel is in it?".
 
+**📖 [Step-by-step guide and live demo](https://mymediabuild.uk/toyota-home-assistant-card/)** · **☕ [Buy me a coffee](https://buymeacoffee.com/bobgreggr)**
+
 ![Toyota card demo](images/demo.gif)
 
 ## What it shows
@@ -74,6 +76,14 @@ The old `custom:yaris-card` name still works, so existing dashboards won't break
 - Door, window, lock and bonnet states are only as fresh as the car's last report. Tap the time in the top-left corner to request an update.
 - The parked distance uses your Home zone.
 - Tyre pressures aren't available from Toyota, so the corners of the top-down car show each door instead.
+
+## Support and requests
+
+I build and look after this card in my spare time.
+
+- **Found a bug?** [Open an issue](../../issues/new/choose) and fill in the form. A screenshot and the entity list help a lot.
+- **Want another car brand or a new feature?** Use the feature request form. Pull requests are very welcome. I build this in my spare time and can only test on my own car, so I can't promise every request.
+- **Like the card?** A ⭐ on GitHub helps other people find it, and you can [buy me a coffee](https://buymeacoffee.com/bobgreggr) ☕. More free Home Assistant cards and guides at [mymediabuild.uk](https://mymediabuild.uk).
 
 ## Thanks
 
