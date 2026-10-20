@@ -8,7 +8,7 @@
 //         prefix: <your car's entity prefix>   (optional - the first Toyota found is used)
 //         units: metric | imperial   (optional; defaults to imperial for backwards compatibility)
 
-const VERSION = "1.0.2";
+const VERSION = "1.1.0";
 const KM_MI = 0.621371, L100_MPG = 282.481;
 const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
 const num = v => (v === undefined || v === null || v === "" || isNaN(+v)) ? null : +v;
@@ -138,10 +138,10 @@ class YarisCard extends HTMLElement {
     const battClass = batt <= 20 ? "low" : batt <= 50 ? "medium" : "";
     const batteryCard = battery === null ? "" : `<div class="ev"><div class="battery-icon" role="img" aria-label="${Math.round(battery)} percent battery"><div class="battery-fill ${battClass}" style="width:${batt}%"></div></div>
       <div class="ev-main"><span>hybrid battery</span><b>${Math.round(battery)}%</b></div>
-      <div class="ev-range"><span>electric range</span><b>${mi(batteryRange)} mi</b><span>with A/C: ${mi(batteryRangeAC)} mi</span></div>
+      <div class="ev-range"><span>electric range</span><b>${distance(batteryRange)} ${distanceUnit}</b><span>with A/C: ${distance(batteryRangeAC)} ${distanceUnit}</span></div>
       <div class="ev-status">${charging === "unknown" || charging === "unavailable" || !charging ? "Charging: –" : `Charging: ${esc(charging)}`}${chargeTime && !["unknown", "unavailable"].includes(chargeTime) ? ` · ${esc(chargeTime)} remaining` : ""}</div></div>`;
     const extraInfo = this._config.show_extra_info === true ? `
-          <div><span>average speed this week</span><b>${avgSpeed === null ? "–" : `${(avgSpeed * KM_MI).toLocaleString("en-GB", { maximumFractionDigits: 0 })} mph`}</b></div>
+          <div><span>average speed this week</span><b>${avgSpeed === null ? "–" : `${distance(avgSpeed)} ${units === "metric" ? "km/h" : "mph"}`}</b></div>
           <div><span>recent trips</span><b>${tripCount === null ? "–" : tripCount}</b></div>
           <div><span>climate</span><b>${climateOn ? "on" : climate ? "off" : "–"}${num(climateAttrs.temperature) === null ? "" : ` · ${num(climateAttrs.temperature)}°`}</b></div>
           <div><span>cabin temperature</span><b>${num(S("cabin_temperature")?.state) === null ? "–" : `${num(S("cabin_temperature").state)}°`}</b></div>
@@ -180,10 +180,10 @@ class YarisCard extends HTMLElement {
       <div class="hr"><span>information</span></div>
       <div class="info">
         <div class="cells">
-          <div><span>average ${consumptionUnit}</span><b>${consumption ?? "–"}</b></div><div><span>electric driving</span><b>${evPct ?? "–"}%</b></div>
+          <div><span>average ${consumptionUnit}</span><b>${consumption === null ? "–" : formatNumber(consumption, locale, units === "metric" ? 1 : 0)}</b></div><div><span>electric driving</span><b>${evPct ?? "–"}%</b></div>
           <div><span>hybrid score</span><b>${yr.Hybrid_score ? Math.round(yr.Hybrid_score) : "–"}</b></div><div><span>last trip score</span><b>${trip?.scores?.global ?? "–"}</b></div>
           ${extraInfo}
-          <fieldset class="box"><legend>last service</legend><b>${svc?.state ? new Date(svc.state).toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" }) : "–"}</b>
+          <fieldset class="box"><legend>last service</legend><b>${svc?.state && !["unknown", "unavailable"].includes(svc.state) ? new Date(svc.state).toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" }) : "–"}</b>
             <b>${svcOdo !== null && odo !== null ? `${distance(odo - svcOdo)} ${distanceUnit} ago` : ""}</b></fieldset>
         </div>
         <div class="topdown">${corner("passengerseat", "passenger")}${car}${corner("driverseat", "driver")}${corner("leftrearseat", "rear left")}${corner("rightrearseat", "rear right")}</div>
